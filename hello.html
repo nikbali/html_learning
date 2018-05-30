@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+<head>                                                               
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+
+	$(".btn-slide").click(function(){
+		$("#panel").slideToggle("slow");
+		$(this).toggleClass("active"); return false;
+	});
+	
+	 
+});
+</script>
+
+<style type="text/css" src="style.css"></style>
+</head>
+
+<body>
+
+<div id="panel">
+	<!-- you can put content here -->
+</div>
+
+<p class="slide"><a href="#" class="btn-slide">Slide Panel</a></p>
+
+</body>
+</html>
