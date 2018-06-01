@@ -1,8 +1,7 @@
-// Заголовок страницы (h1)
-var title = 'Срез по первому блоку';
-// Подзаголовок (h2)
-var subtitle = "Этот тест позволяет оценить Ваши знания";
-// Это ваши вопросы
+var xhr = new XMLHttpRequest();
+var objects = [];
+var cnt = 0;
+
 var questions=[
 {
     text: "Эстетический идеал выступает как:",
@@ -27,24 +26,48 @@ var questions=[
 }
 ];
 
+var question_new = [];
 var yourAns = new Array;
 var score = 0;
 var curent = 0;
 
-function Engine(question, answer) {yourAns[question]=answer;}
+
+function loadData(){
+for(var i = 1 ; i  < 45; i++ )
+{
+    var url = "http://nikbali.ru/mywebproject/queryquestion?id="+ i +"";
+    xhr.open('GET', url, false);
+    xhr.send();
+    if (xhr.status == 200)
+    { 
+      objects[cnt] = JSON.parse(xhr.responseText);
+      cnt++;
+    }
+}
+alert(cnt ); 
+}
+function Engine(question, answer) {yourAns[question-1]=answer;}
 function Score(){
    var answerText = "Результаты:\n";
    for(var i = 0; i < yourAns.length; ++i){
     var num = i+1;
     answerText=answerText+"\n    Вопрос №"+ num +"";
-    if(yourAns[i]!=questions[i].correctAnswer){
+    var true_ans = "";
+    //поиск правильного ответа в вопросе
+    for(var j=0; j<objects[i].length;j++)
+    {
+        if(objects[i].answers[j].isRight == true) true_ans = objects[i].answers[j];
+    }
+    
+    if(true_ans!="" || yourAns[i].isRight!=true)
+    {
         answerText=answerText+"\n    Правильный ответ: " +
-        questions[i].answers[questions[i].correctAnswer] + "\n";
-      }
-        else{
-        answerText=answerText+": Верно! \n";
-        ++score;
-        }
+        true_ans + "\n";
+    }
+    else{
+    answerText=answerText+": Верно! \n";
+    ++score;
+    }
        }
 
    answerText=answerText+"\nВсего правильных ответов: "+score+"\n";
@@ -63,9 +86,8 @@ function clearForm(name) {
 }
 }
 
-function nextQuestion()
-{
-    if(curent == questions.length)
+function nextQuestion(){
+    if(curent == objects.length)
     {
         Score();
     }
@@ -75,12 +97,12 @@ function nextQuestion()
        sp1.setAttribute("id", "process");
        
             
-       var question = questions[curent];
-       sp1.innerHTML = '<li value="' + (curent+1) +'"><span class="quest">' + question.text + '</span><br/>';
+       var question = objects[curent];
+       sp1.innerHTML = '<li value="' + (curent+1) +'"><span class="quest">' + question.textOfQuestion + '</span><br/>';
        for(var i in question.answers)
        {
             sp1.innerHTML +='<input type=radio name="q' + curent + '" value="' + i +
-            '" onClick="Engine(' + curent + ', this.value)">' + question.answers[i] + '<br/>';
+            '" onClick="Engine(' + curent + ', this.value)">' + question.answers[i].text + '<br/>';
        }               
        var sp2 = document.getElementById("process");
        while (sp2.firstChild) 
