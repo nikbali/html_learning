@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <title>Create Question</title>
         <link href="style/style.css" type="text/css" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700" rel="stylesheet">
 </head>
 <body>
     <h1>Add Question</h1>
@@ -11,18 +12,31 @@
     <form id= "createQuestionForm" action="" method="post">
     <p>
         <label>Input text question:</label><br>
-        <textarea rows="5" name="text_question" id="text_question"></textarea>
+        <textarea rows="5" cols = "100" name="text_question" id="text_question"></textarea>
     </p>
     <p>
         <label>Image: </label>
-        <input type="file" name="image" />
+        <div class="fileform">
+			<div class="selectbutton">Обзор</div>
+			<input id="upload" type="file" name="upload" />
+		</div>
     </p>
     
-    <div id="new_fields">
-    </div>
+   
+		<table id="new_fields" style="display:none">
+			
+			 <tr>
+				<th>Text</th>
+				<th>isRight</th>
+			</tr>
+			
+			
+			
+		</table>
+   
     <input type="button" id="addfields" value="Add answer" />
     <br>
-    <input type="submit" value="Создать">   
+    <input type="submit" value="Create">   
     </form>
     
 </body>
