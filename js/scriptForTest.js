@@ -2,30 +2,6 @@ var xhr = new XMLHttpRequest();
 var objects = [];
 var cnt = 0;
 
-var questions=[
-{
-    text: "Эстетический идеал выступает как:",
-    answers: ["тенденция  развития искусства",
-          "тенденция общественного развития",
-          "тенденция правящих групп"],
-    correctAnswer: 0 // нумерация ответов с нуля!
-},
-{
-    text: "Эстетические чувства:",
-    answers: ["даются человеку от  рождения",
-          "формируются в первые 3-4 года жизни",
-          "наличествуют не  у всех людей, а развиваются индивидуально"],
-    correctAnswer: 1
-},
-{
-    text: "Символ есть:",
-    answers: ["образ, видоизмененный переживанием",
-          "отражение личных представлений художника",
-          "образ - точная копия окружающей действительности"],
-    correctAnswer: 0
-}
-];
-
 var question_new = [];
 var yourAns = new Array;
 var score = 0;
@@ -33,58 +9,72 @@ var curent = 0;
 
 
 function loadData(){
-for(var i = 1 ; i  < 45; i++ )
+try
 {
-    var url = "http://nikbali.ru/mywebproject/queryquestion?id="+ i +"";
-    xhr.open('GET', url, false);
-    xhr.send();
-    if (xhr.status == 200)
-    { 
-      objects[cnt] = JSON.parse(xhr.responseText);
-      cnt++;
+    for(var i = 1 ; i  < 45; i++ )
+    {
+
+      var url = "http://localhost:8888/queryquestion?id="+ (i+300) +""; //плюс тристо это просто ход чтоб данные были не кривми
+      xhr.open('GET', url, false);
+      xhr.send();
+      if (xhr.status == 200)
+      { 
+        objects[cnt] = JSON.parse(xhr.responseText);
+        cnt++;
+      }
     }
 }
-alert(cnt ); 
+catch(e)
+{
+    alert('Ошибка загрузки данных из интеренета'); 
+    document.location.href ='main.html';
 }
-function Engine(question, answer) {yourAns[question-1]=answer;}
+}
+function Engine(question, answer) {yourAns[question]=answer;}
 function Score(){
    var answerText = "Результаты:\n";
-   for(var i = 0; i < yourAns.length; ++i){
-    var num = i+1;
-    answerText=answerText+"\n    Вопрос №"+ num +"";
-    var true_ans = "";
-    //поиск правильного ответа в вопросе
-    for(var j=0; j<objects[i].length;j++)
-    {
-        if(objects[i].answers[j].isRight == true) true_ans = objects[i].answers[j];
-    }
-    
-    if(true_ans!="" || yourAns[i].isRight!=true)
-    {
-        answerText=answerText+"\n    Правильный ответ: " +
-        true_ans + "\n";
-    }
-    else{
-    answerText=answerText+": Верно! \n";
-    ++score;
-    }
-       }
+   for(var i = 0; i < yourAns.length; ++i)
+   {
+      var num = i+1;
+      answerText=answerText+"\n    Вопрос №"+ num +"";
+      var true_ans = "";
+      var number_ans;
+      //поиск правильного ответа в вопросе
+      for(var j=0; j<objects[i].answers.length; j++)
+      {
+          if(objects[i].answers[j].isRight == true) 
+          {
+            true_ans = objects[i].answers[j].text;
+            number_ans = j;
+          }
+      }
+      
+      if(true_ans=="")
+      {
+          answerText=answerText+"\n    Правильный ответ: " + " Ошибка в данных\n";
+      }
+      else
+      {
+          if(yourAns[i] == number_ans)
+          {
+            answerText=answerText+": Верно! \n";
+            ++score;
+          }
+          else
+          {
+            answerText=answerText+"\n    Правильный ответ: " +true_ans +"\n";
+          }
+      }
+   }
 
    answerText=answerText+"\nВсего правильных ответов: "+score+"\n";
 
    alert(answerText);
    yourAns = [];
    score = 0;
-   clearForm("quiz");
+   document.location.href ='main.html';
 }
-function clearForm(name) {
-    
-   var f = document.forms[name];
-   for(var i = 0; i < f.elements.length; ++i) {
-    if(f.elements[i].checked)
-        f.elements[i].checked = false;
-}
-}
+
 
 function nextQuestion(){
     if(curent == objects.length)
@@ -99,6 +89,9 @@ function nextQuestion(){
             
        var question = objects[curent];
        sp1.innerHTML = '<li value="' + (curent+1) +'"><span class="quest">' + question.textOfQuestion + '</span><br/>';
+       /**
+       *Цикл по всем ответам в value храним номер ответа который выбрал пользователь
+       */
        for(var i in question.answers)
        {
             sp1.innerHTML +='<input type=radio name="q' + curent + '" value="' + i +
