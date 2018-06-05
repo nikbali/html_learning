@@ -11,18 +11,15 @@ var curent = 0;
 function loadData(){
 try
 {
-    for(var i = 1 ; i  < 45; i++ )
-    {
-
-      var url = "http://localhost:8888/queryquestion?id="+ (i+300) +""; //плюс тристо это просто ход чтоб данные были не кривми
+   
+      var url = "http://nikbali.ru/queryquestion?rand=20"; //плюс тристо это просто ход чтоб данные были не кривми
       xhr.open('GET', url, false);
       xhr.send();
       if (xhr.status == 200)
       { 
-        objects[cnt] = JSON.parse(xhr.responseText);
-        cnt++;
+        objects = JSON.parse(xhr.responseText);
       }
-    }
+    
 }
 catch(e)
 {
@@ -83,7 +80,7 @@ function nextQuestion(){
     }
     else
     {
-       var sp1 = document.createElement("div"); //тут все дело храним
+      var sp1 = document.createElement("div"); //тут все дело храним
        sp1.setAttribute("id", "process");
        
             
