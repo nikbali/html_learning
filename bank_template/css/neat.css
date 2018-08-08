@@ -4761,7 +4761,7 @@ be a descendant of the grid when it is being dragged.
 .o-page__content {
   position: absolute;
   right: 0;
-  left: 250px;
+  left: 0;
   min-height: 100%;
   -webkit-transition: -webkit-transform 0.3s;
   transition: -webkit-transform 0.3s;
@@ -5208,7 +5208,7 @@ be a descendant of the grid when it is being dragged.
   background-color: #768093; }
   .c-btn--secondary.c-btn--outline {
     background-color: transparent;
-    color: #768093; }
+    color: #ffffff; }
     .c-btn--secondary.c-btn--outline:hover {
       color: #768093; }
 
@@ -7086,9 +7086,9 @@ textarea.c-input {
 /* Style variants
    ========================================================================== */
 .c-state-card--info {
-  background: #1D7BF0;
-  background: -webkit-gradient(linear, left top, left bottom, from(#1D7BF0), to(#2083FE));
-  background: linear-gradient(to bottom, #1D7BF0, #2083FE); }
+  background: #48da89;
+  background: -webkit-gradient(linear, left top, left bottom, from(#48da89), to(#24b263));
+  background: linear-gradient(to bottom, #48da89, #24b263); }
 
 .c-state-card--success {
   background: #28C76F;
